@@ -110,25 +110,88 @@
 
       // --- COMPONENTS ---
 
-      const Nav = () => (
-        <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel m-4 rounded-full max-w-5xl mx-auto">
-          <div className="font-bold text-xl tracking-tight">Rahul E. Chand</div>
-          <div className="flex gap-6 text-sm font-medium text-gray-600">
-            <a href="#work" className="hover:text-black transition-colors">
-              Work
-            </a>
-            <a
-              href="#experience"
-              className="hover:text-black transition-colors"
+      const Nav = () => {
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+        useEffect(() => {
+          lucide.createIcons();
+        }, [isMenuOpen]);
+
+        return (
+          <>
+            <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel m-4 rounded-full max-w-7xl mx-auto">
+              <div className="font-bold text-xl tracking-tight">
+                Rahul E. Chand
+              </div>
+
+              {/* Desktop Menu */}
+              <div className="hidden md:flex gap-6 text-sm font-medium text-gray-600">
+                <a href="#work" className="hover:text-black transition-colors">
+                  Work
+                </a>
+                <a
+                  href="#experience"
+                  className="hover:text-black transition-colors"
+                >
+                  Experience
+                </a>
+                <a
+                  href="#contact"
+                  className="hover:text-black transition-colors"
+                >
+                  Contact
+                </a>
+              </div>
+
+              {/* Mobile Hamburger Button */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? (
+                  <i data-lucide="x" className="w-6 h-6"></i>
+                ) : (
+                  <i data-lucide="menu" className="w-6 h-6"></i>
+                )}
+              </button>
+            </nav>
+
+            {/* Mobile Menu */}
+            <div
+              className={`fixed top-24 left-0 right-0 z-40 px-4 md:hidden transition-all duration-300 ease-out ${
+                isMenuOpen
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 -translate-y-4 pointer-events-none"
+              }`}
             >
-              Experience
-            </a>
-            <a href="#contact" className="hover:text-black transition-colors">
-              Contact
-            </a>
-          </div>
-        </nav>
-      );
+              <div className="glass-panel rounded-3xl p-6 flex flex-col gap-4 max-w-7xl mx-auto">
+                <a
+                  href="#work"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-lg font-medium text-gray-600 hover:text-black transition-colors py-2"
+                >
+                  Work
+                </a>
+                <a
+                  href="#experience"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-lg font-medium text-gray-600 hover:text-black transition-colors py-2"
+                >
+                  Experience
+                </a>
+                <a
+                  href="#contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-lg font-medium text-gray-600 hover:text-black transition-colors py-2"
+                >
+                  Contact
+                </a>
+              </div>
+            </div>
+          </>
+        );
+      };
 
       const HeroBento = () => {
         const containerRef = useRef(null);
@@ -202,7 +265,7 @@
               {/* Experience Summary */}
               <div className="bento-item col-span-1 md:col-span-2 md:row-span-1 glass-panel rounded-[2.5rem] p-8 flex flex-col justify-center">
                 <p className="text-2xl font-semibold leading-tight text-gray-800">
-                  As a Master's Student in Product Design and Management I
+                  As a Master's student in Product Design and Management I
                   specialize in Design Thinking, and building customer-centric
                   products.
                 </p>
