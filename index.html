@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rahul Ebenezer Chand | Portfolio</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      /* Apple-esque Font Stack */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+          "Segoe UI Symbol";
+        background-color: #f5f5f7; /* Apple Light Gray */
+        color: #1d1d1f;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Glassmorphism Utilities */
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+      }
+
+      .glass-panel-dark {
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      /* Infinite Scroll Animation */
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(-250px * 5));
+        } /* Width of card * number of cards */
+      }
+
+      .slider {
+        height: 300px;
+        margin: auto;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+      }
+
+      .slide-track {
+        animation: scroll 40s linear infinite;
+        display: flex;
+        width: calc(250px * 10); /* Double the content */
+      }
+
+      .slide {
+        height: 280px;
+        width: 250px;
+        margin-right: 2rem;
+      }
+
+      .slider:hover .slide-track {
+        animation-play-state: paused;
+      }
+
+      /* Hide Scrollbar */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useEffect, useRef, useState } = React;
+
+      // --- COMPONENTS ---
+
+      const Nav = () => (
+        <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel m-4 rounded-full max-w-5xl mx-auto">
+          <div className="font-bold text-xl tracking-tight">Rahul E. Chand</div>
+          <div className="flex gap-6 text-sm font-medium text-gray-600">
+            <a href="#work" className="hover:text-black transition-colors">
+              Work
+            </a>
+            <a
+              href="#experience"
+              className="hover:text-black transition-colors"
+            >
+              Experience
+            </a>
+            <a href="#contact" className="hover:text-black transition-colors">
+              Contact
+            </a>
+          </div>
+        </nav>
+      );
+
+      const HeroBento = () => {
+        const containerRef = useRef(null);
+
+        useEffect(() => {
+          const ctx = gsap.context(() => {
+            gsap.from(".bento-item", {
+              y: 50,
+              opacity: 0,
+              duration: 1,
+              stagger: 0.1,
+              ease: "power3.out",
+              delay: 0.2,
+            });
+          }, containerRef);
+          return () => ctx.revert();
+        }, []);
+
+        return (
+          <section
+            ref={containerRef}
+            className="min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex flex-col justify-center"
+          >
+            <div className="mb-12 text-center md:text-left">
+              <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-[#1d1d1f] mb-4">
+                Designing & Developing <br />
+                <span className="text-gray-400">Impact.</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-500 max-w-2xl font-medium">
+                Certified Lead Bubble.io Developer & Product Manager. <br />
+                Building scalable, user-centric applications.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
+              {/* Profile Picture Card */}
+              <div className="bento-item col-span-1 md:col-span-2 md:row-span-2 glass-panel rounded-[2.5rem] overflow-hidden relative group">
+                <img
+                  src="RahulEChandDisplayPicture.JPG"
+                  alt="Rahul Ebenezer Chand"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/60 to-transparent text-white">
+                  <h3 className="text-2xl font-bold">Rahul Ebenezer Chand</h3>
+                  <p className="opacity-80">Based in Hyderabad, India</p>
+                </div>
+              </div>
+
+              {/* Tech Stack */}
+              <div className="bento-item col-span-1 md:col-span-1 md:row-span-1 glass-panel rounded-[2.5rem] p-8 flex flex-col justify-between hover:bg-white/80 transition-colors duration-300">
+                <div className="bg-black text-white w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold">
+                  B
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-1">Bubble.io</h3>
+                  <p className="text-sm text-gray-500">Expert Development</p>
+                </div>
+              </div>
+
+              {/* Key Stat */}
+              <div className="bento-item col-span-1 md:col-span-1 md:row-span-1 bg-[#1d1d1f] text-white rounded-[2.5rem] p-8 flex flex-col justify-between">
+                <i data-lucide="trending-up" className="w-8 h-8 opacity-70"></i>
+                <div>
+                  <h3 className="text-xl font-bold mb-1">MVP in 4-6 Weeks</h3>
+                  <p className="text-sm opacity-70">
+                    Scoped and approved by you
+                  </p>
+                </div>
+              </div>
+
+              {/* Experience Summary */}
+              <div className="bento-item col-span-1 md:col-span-2 md:row-span-1 glass-panel rounded-[2.5rem] p-8 flex flex-col justify-center">
+                <p className="text-2xl font-semibold leading-tight text-gray-800">
+                  As a Master's Student in Product Design and Management I
+                  specialize in Design Thinking, and building customer-centric
+                  products.
+                </p>
+                <div className="mt-4 flex gap-2 flex-wrap">
+                  <span className="px-3 py-1 bg-white/50 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    Product Development
+                  </span>
+                  <span className="px-3 py-1 bg-white/50 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    Bubble.io Training
+                  </span>
+                  <span className="px-3 py-1 bg-white/50 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    Scoping & Documentation
+                  </span>
+                  <span className="px-3 py-1 bg-white/50 rounded-full text-xs font-semibold uppercase tracking-wider"></span>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      const SelectedWork = () => {
+        return (
+          <section id="work" className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
+            <div className="mb-12 flex items-end justify-between">
+              <div>
+                <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">
+                  Selected Work
+                </h2>
+                <h3 className="text-4xl md:text-5xl font-bold text-[#1d1d1f]">
+                  Maximum Impact
+                </h3>
+              </div>
+            </div>
+
+            <div className="glass-panel-dark rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-white group">
+              {/* Background Decor */}
+              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-pink-500 rounded-full mix-blend-screen filter blur-[120px] opacity-20 -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20 translate-y-1/2 -translate-x-1/2"></div>
+
+              <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                  <div className="inline-block px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-sm font-medium mb-6">
+                    Senior Bubble.io Developer
+                  </div>
+                  <h3 className="text-5xl md:text-7xl font-bold mb-6 leading-none">
+                    Bali.Love
+                  </h3>
+                  <p className="text-lg text-gray-300 mb-8 max-w-md leading-relaxed">
+                    Designed, implemented, and tested high-impact features
+                    serving over 300 active couples. Contributed to $5M AUD ARR
+                    by building tools essential to 90% of the user base.
+                  </p>
+                  <ul className="space-y-4 mb-10 text-gray-300">
+                    <li className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                      <span>Planning Guide & Timeline System</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                      <span>Sales-driving Style Guide</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                      <span>Admin Comment & Blog Systems</span>
+                    </li>
+                  </ul>
+                  <a
+                    href="https://app.bali.love/"
+                    target="_blank"
+                    className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform"
+                  >
+                    Visit Platform
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M7 17l9.2-9.2M17 8v9" />
+                    </svg>
+                  </a>
+                </div>
+
+                <div className="h-full min-h-[400px] glass-panel rounded-3xl p-4 md:p-6 flex items-center justify-center bg-white/5 border-white/10">
+                  {/* Abstract UI Representation */}
+                  <div className="w-full h-full relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                      <h4 className="text-3xl font-bold mb-2">Bali.Love</h4>
+                      <p className="text-sm uppercase tracking-widest opacity-60">
+                        Wedding Platform
+                      </p>
+                    </div>
+                    {/* Decorative floating cards */}
+                    <div className="absolute top-10 right-10 p-4 glass-panel rounded-xl w-32 animate-pulse">
+                      <div className="h-2 bg-white/20 rounded w-16 mb-2"></div>
+                      <div className="h-2 bg-white/10 rounded w-full"></div>
+                    </div>
+                    <div className="absolute bottom-20 left-10 p-4 glass-panel rounded-xl w-40">
+                      <div className="h-8 w-8 rounded-full bg-pink-500/50 mb-2"></div>
+                      <div className="h-2 bg-white/20 rounded w-24"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      const ProjectCard = ({
+        title,
+        role,
+        description,
+        tags,
+        link,
+        isOffline,
+      }) => (
+        <div className="glass-panel p-8 rounded-[2rem] hover:bg-white/80 transition-colors duration-300 flex flex-col h-full">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold mb-2 text-[#1d1d1f]">{title}</h3>
+            <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              {role}
+            </p>
+          </div>
+          <p className="text-gray-600 mb-6 flex-grow leading-relaxed">
+            {description}
+          </p>
+          <div className="flex flex-wrap gap-2 mb-6">
+            {tags.map((tag, i) => (
+              <span
+                key={i}
+                className="text-xs font-semibold px-2 py-1 bg-gray-200 text-gray-700 rounded-md"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          {isOffline ? (
+            <div className="mt-auto pt-4 border-t border-gray-200">
+              <span className="text-sm text-gray-400 italic flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-400"></span>
+                Currently Offline
+              </span>
+            </div>
+          ) : (
+            link && (
+              <a
+                href={link}
+                target="_blank"
+                className="mt-auto inline-flex items-center text-sm font-bold text-blue-600 hover:underline"
+              >
+                View Project
+                <svg
+                  className="w-4 h-4 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  ></path>
+                </svg>
+              </a>
+            )
+          )}
+        </div>
+      );
+
+      const OtherProjects = () => {
+        const projects = [
+          {
+            title: "Tactical Longevity",
+            role: "AGIL f(x)",
+            description:
+              "Mobile-first mental health resource app for police officers. Wrapped with BDK Native for iOS/Android. Focus on privacy and resource accessibility.",
+            tags: ["BDK Native", "Healthcare", "Mobile First"],
+            link: "https://play.google.com/store/apps/details?id=com.tacticallongevity.tacticallongevity&hl=en_IN",
+            isOffline: false,
+          },
+          {
+            title: "GreekVibe",
+            role: "Madhupa Inc.",
+            description:
+              "Real-time chat and peer discovery for Greek life. Built core features enabling early user engagement.",
+            tags: ["iOS App", "Real-time Chat"],
+            link: "https://greekvibe.net/",
+            isOffline: false,
+          },
+          {
+            title: "CommonFaktor",
+            role: "Madhupa Inc.",
+            description:
+              "Secure, invite-only dating experience focusing on trust, onboarding, and privacy.",
+            tags: ["Privacy", "Dating App"],
+            link: "https://commonfaktor.com/?nav=home",
+            isOffline: false,
+          },
+        ];
+
+        return (
+          <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
+            <h2 className="text-4xl font-bold text-[#1d1d1f] mb-12">
+              Other Deployments
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.map((p, i) => (
+                <ProjectCard key={i} {...p} />
+              ))}
+            </div>
+          </section>
+        );
+      };
+
+      const ExperienceItem = ({
+        role,
+        company,
+        date,
+        location,
+        description,
+      }) => (
+        <div className="relative pl-8 md:pl-0">
+          <div className="hidden md:block absolute left-[50%] top-0 transform -translate-x-1/2 w-4 h-4 bg-gray-200 rounded-full border-4 border-white z-10"></div>
+          <div className="md:flex justify-between items-start w-full group">
+            <div className="md:w-[45%] md:text-right mb-2 md:mb-0 md:pr-12">
+              <h3 className="text-xl font-bold text-[#1d1d1f]">{company}</h3>
+              <p className="text-sm font-medium text-gray-500 mb-1">
+                {location}
+              </p>
+              <p className="text-sm font-semibold text-blue-600">{date}</p>
+            </div>
+            <div className="md:w-[45%] md:pl-12 glass-panel p-6 rounded-2xl relative">
+              {/* Mobile dot */}
+              <div className="md:hidden absolute -left-[2.25rem] top-6 w-3 h-3 bg-gray-300 rounded-full border-2 border-white"></div>
+              <h4 className="text-lg font-bold mb-3">{role}</h4>
+              <ul className="list-disc list-outside ml-4 space-y-2 text-sm text-gray-600 leading-relaxed">
+                {description.map((point, i) => (
+                  <li key={i}>{point}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+
+      const Experience = () => {
+        const jobs = [
+          {
+            role: "Certified Lead Bubble.io Developer (Contract)",
+            company: "Madhupa Inc.",
+            date: "Sept 2024 - June 2025",
+            location: "San Francisco, CA (Remote)",
+            description: [
+              "Designed, built, and launched 3 MVPs (Wingman, GreekVibe, CommonFaktor) across web and iOS using Bubble.io and Natively.",
+              "Set up scalable design systems ensuring consistent UI/UX.",
+              "Integrated Stripe and RevenueCat for subscription-based revenue.",
+              "Managed end-to-end deployment for smooth iOS rollouts.",
+            ],
+          },
+          {
+            role: "Certified Senior Bubble.io Developer (Contract)",
+            company: "AGIL F(X)",
+            date: "June 2024 - Sep 2024",
+            location: "Philadelphia, PA (Remote)",
+            description: [
+              "Created 'Tactical Longevity', a mental health tool for first responders.",
+              "Wrapped web app natively for iOS/Android using BDK Native.",
+              "Optimized performance and UX for seamless mobile usage.",
+              "Integrated secure access to professional assistance resources.",
+            ],
+          },
+          {
+            role: "Senior Bubble.io Developer",
+            company: "Upify Digital (Bali.Love)",
+            date: "May 2023 - June 2024",
+            location: "Geelong, Australia (Remote)",
+            description: [
+              "Built 5 major features including Style Guide, Planning Guide, and Blogging System.",
+              "Contributed to $5M AUD ARR growth serving 300+ active couples.",
+              "Maintained app performance and ensured strict adherence to Design Systems.",
+              "Collaborated with cross-functional teams for product quality.",
+            ],
+          },
+          {
+            role: "Bubble.io Developer (Freelance)",
+            company: "Raia Technologies",
+            date: "Sep 2022 - May 2023",
+            location: "Mumbai, India (Remote)",
+            description: [
+              "Designed 'Growth Referrals' CRM to track business referrals.",
+              "Integrated Twilio Studio Flow for SMS submissions and Stripe API for payments ($700K+ transacted).",
+              "Implemented complex user roles for Organizations, Promoters, and Partners.",
+            ],
+          },
+          {
+            role: "Operations Executive & Bubble.io Developer",
+            company: "Gradvine Advisors",
+            date: "July 2021 - Sep 2022",
+            location: "Hyderabad, India",
+            description: [
+              "Developed University Recommendation System MVP, automating analysis of 3000+ applicants.",
+              "Optimized process duration by 40% (150 days to 90 days).",
+              "Leveraged operations knowledge to build scalable, user-centric tools.",
+            ],
+          },
+        ];
+
+        return (
+          <section
+            id="experience"
+            className="py-20 px-4 md:px-8 max-w-7xl mx-auto relative"
+          >
+            <h2 className="text-4xl font-bold text-[#1d1d1f] mb-16 text-center">
+              Experience
+            </h2>
+
+            {/* Timeline Line */}
+            <div className="absolute left-8 md:left-1/2 top-40 bottom-20 w-px bg-gray-200 transform -translate-x-1/2"></div>
+
+            <div className="space-y-12">
+              {jobs.map((job, i) => (
+                <ExperienceItem key={i} {...job} />
+              ))}
+            </div>
+          </section>
+        );
+      };
+
+      const TestimonialCard = ({ quote, author, role }) => (
+        <div className="slide bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
+          <div>
+            <div className="flex gap-1 mb-4">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <span key={s} className="text-yellow-400">
+                  ★
+                </span>
+              ))}
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">"{quote}"</p>
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-50">
+            <p className="font-bold text-gray-900 text-sm">{author}</p>
+            <p className="text-xs text-gray-400">{role}</p>
+          </div>
+        </div>
+      );
+
+      const Testimonials = () => {
+        // Updated with Actual Client Testimonials
+        const testimonials = [
+          {
+            quote:
+              "I'm super impressed with the way you approach your work. I love the detailed notes in each card. It's great communication and also good education for me.",
+            author: "Tom Hay",
+            role: "Upify Digital",
+          },
+          {
+            quote:
+              "Great job with the Admin Panel for Tactical Longevity! Your care for detail and UX really made the difference.",
+            author: "David Langarica",
+            role: "Product Team, Tactical Longevity",
+          },
+          {
+            quote:
+              "He has played a pivotal role in establishing some of the systems and processes all of us use today. He is not only a great developer but also a great person.",
+            author: "Shivam Pujara",
+            role: "Manager",
+          },
+          {
+            quote:
+              "I love the detailed notes in each card. It's great communication. Really glad you joined the team.",
+            author: "Tom Hay",
+            role: "Upify Digital",
+          },
+          {
+            quote:
+              "Contributed to growth to $5M AUD ARR in 1 year by developing essential tools.",
+            author: "Metric Highlight",
+            role: "Upify Digital",
+          },
+          {
+            quote:
+              "Optimised process duration from 150 days to 90 days, a 40% improvement in efficiency.",
+            author: "Metric Highlight",
+            role: "Gradvine Advisors",
+          },
+        ];
+
+        return (
+          <section className="py-20 overflow-hidden bg-white/50 backdrop-blur-sm border-y border-white">
+            <div className="max-w-7xl mx-auto px-6 mb-10 text-center">
+              <h2 className="text-3xl font-bold text-gray-900">
+                What People Say
+              </h2>
+            </div>
+
+            <div className="slider">
+              <div className="slide-track">
+                {/* Render twice for seamless loop */}
+                {[...testimonials, ...testimonials].map((t, i) => (
+                  <div className="mx-4" key={i}>
+                    <TestimonialCard {...t} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      const FAQItem = ({ question, answer, isOpen, onClick }) => (
+        <div className="glass-panel rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/80">
+          <button
+            onClick={onClick}
+            className="w-full px-8 py-6 flex justify-between items-center text-left"
+          >
+            <h3 className="text-lg font-bold text-[#1d1d1f] pr-4">
+              {question}
+            </h3>
+            <div
+              className={`transition-transform duration-300 ${
+                isOpen ? "rotate-45" : ""
+              }`}
+            >
+              <i data-lucide="plus" className="w-6 h-6"></i>
+            </div>
+          </button>
+          <div
+            className={`overflow-hidden transition-all duration-300 ${
+              isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            }`}
+          >
+            <div className="px-8 pb-6 text-gray-600 leading-relaxed">
+              {answer}
+            </div>
+          </div>
+        </div>
+      );
+
+      const FAQ = () => {
+        const [openIndex, setOpenIndex] = useState(null);
+
+        const faqs = [
+          {
+            question: "What is your typical project timeline?",
+            answer:
+              "Most MVP projects are delivered within 4-6 weeks, depending on scope and complexity. This includes initial planning, development, testing, and deployment phases. I work closely with clients to ensure realistic timelines that meet their business goals.",
+          },
+          {
+            question: "Do you offer ongoing support and maintenance?",
+            answer:
+              "Yes, I provide ongoing support packages for applications after launch. This includes bug fixes, feature enhancements, performance optimization, and technical consultation to ensure your application continues to meet your evolving needs.",
+          },
+          {
+            question: "What technologies do you specialize in?",
+            answer:
+              "I specialize in Bubble.io for rapid application development, along with native mobile wrappers like BDK Native and Natively. I also integrate various APIs including Stripe, RevenueCat, Twilio, and more to build comprehensive solutions.",
+          },
+          {
+            question: "Can you help with mobile app development?",
+            answer:
+              "Absolutely! I have extensive experience wrapping web applications as native iOS and Android apps using tools like BDK Native and Natively. This approach allows for faster development while maintaining native mobile functionality.",
+          },
+          {
+            question: "How do you handle project communication?",
+            answer:
+              "I believe in transparent, detailed communication throughout the project lifecycle. I provide regular updates, detailed documentation, and use project management tools to keep you informed of progress, challenges, and milestones.",
+          },
+          {
+            question: "What industries do you have experience in?",
+            answer:
+              "I've worked across various industries including wedding planning, mental health, education technology, dating platforms, and CRM systems. My product management background helps me quickly understand different business domains and user needs.",
+          },
+        ];
+
+        useEffect(() => {
+          lucide.createIcons();
+        }, [openIndex]);
+
+        return (
+          <section className="py-20 px-4 md:px-8 max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">
+                FAQ
+              </h2>
+              <h3 className="text-4xl md:text-5xl font-bold text-[#1d1d1f]">
+                Common Questions
+              </h3>
+            </div>
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <FAQItem
+                  key={index}
+                  question={faq.question}
+                  answer={faq.answer}
+                  isOpen={openIndex === index}
+                  onClick={() =>
+                    setOpenIndex(openIndex === index ? null : index)
+                  }
+                />
+              ))}
+            </div>
+          </section>
+        );
+      };
+
+      const Footer = () => (
+        <footer id="contact" className="bg-[#1d1d1f] text-white py-20 px-6">
+          <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
+            <div>
+              <h2 className="text-5xl font-bold tracking-tight mb-6">
+                Let's build something <br />
+                extraordinary.
+              </h2>
+              <a
+                href="mailto:rahul.ec14@gmail.com"
+                className="text-2xl text-gray-400 hover:text-white transition-colors border-b border-gray-700 pb-1"
+              >
+                rahul.ec14@gmail.com
+              </a>
+              <p className="mt-4 text-xl text-gray-500">+91 87902 31519</p>
+            </div>
+            <div className="flex flex-col justify-between items-start md:items-end">
+              <div className="flex gap-4">
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                >
+                  <span className="sr-only">LinkedIn</span>
+                  <i data-lucide="linkedin" className="w-5 h-5"></i>
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                >
+                  <span className="sr-only">Twitter</span>
+                  <i data-lucide="twitter" className="w-5 h-5"></i>
+                </a>
+              </div>
+              <p className="text-gray-600 text-sm mt-12">
+                © 2025 Rahul Ebenezer Chand. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </footer>
+      );
+
+      const App = () => {
+        useEffect(() => {
+          // Initialize Lenis
+          const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: "vertical",
+            gestureDirection: "vertical",
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+          });
+
+          function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+          }
+
+          requestAnimationFrame(raf);
+
+          // Initialize Lucide Icons
+          lucide.createIcons();
+
+          // Refresh ScrollTrigger
+          ScrollTrigger.refresh();
+        }, []);
+
+        return (
+          <div className="antialiased">
+            <Nav />
+            <HeroBento />
+            <SelectedWork />
+            <OtherProjects />
+            <Experience />
+            <Testimonials />
+            <FAQ />
+            <Footer />
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
